@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How I Love Rene Conrad Julienne</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: #fff;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2 {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #e75480; /* pink lembut */
+      text-shadow: 0 1px 3px rgba(231, 84, 128, 0.4);
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-top: 60px;
+    }
+    p {
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      font-size: 1.125rem;
+      color: #444;
+      text-align: center;
+    }
+    ul {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      list-style: none;
+      padding-left: 0;
+    }
+    ul li {
+      background: #f0f8ff;
+      margin: 10px 0;
+      padding: 15px 25px;
+      border-left: 6px solid #e75480;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      color: #333;
+      transition: background-color 0.3s ease;
+      cursor: default;
+    }
+    ul li:hover {
+      background: #ffe6f0;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 30px 40px;
+      background: #f9faff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(231, 84, 128, 0.15);
+      margin-bottom: 60px;
+      transition: box-shadow 0.3s ease;
+    }
+    .container:hover {
+      box-shadow: 0 15px 40px rgba(231, 84, 128, 0.3);
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .gallery img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(231, 84, 128, 0.4);
+    }
+    .countdown {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #4a90e2;
+      text-align: center;
+      margin-top: 15px;
+      text-shadow: 0 0 10px #4a90e2aa;
+      user-select: none;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: 0 auto 60px auto;
+      background: #fff0f6;
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 25px rgba(231, 84, 128, 0.2);
+    }
+    .quiz-container h2 {
+      color: #e75480;
+      margin-bottom: 25px;
+    }
+    .question {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    .answers {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 25px;
+    }
+    .answers li {
+      margin-bottom: 12px;
+    }
+    .answers label {
+      cursor: pointer;
+      display: block;
+      padding: 10px 15px;
+      border-radius: 12px;
+      background: #f7d9e3;
+      color: #7a2a49;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .answers input[type="radio"],
+    .answers input[type="checkbox"] {
+      display: none;
+    }
+    .answers input[type="radio"]:checked + label,
+    .answers input[type="checkbox"]:checked + label {
+      background: #e75480;
+      color: #fff;
+      box-shadow: 0 0 10px #e75480cc;
+    }
+    .btn-submit {
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .btn-submit:hover {
+      background: #357abd;
+      box-shadow: 0 8px 25px rgba(53, 122, 189, 0.7);
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      color: #4a90e2;
+      user-select: none;
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 40px #e75480aa;
+      position: relative;
+      background: #fff;
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2.5rem;
+      color: #e75480;
+      cursor: pointer;
+      font-weight: 900;
+      user-select: none;
+      transition: color 0.3s ease;
+      background: transparent;
+      border: none;
+    }
+    .modal-close:hover {
+      color: #b42f57;
+    }
+    /* Initial page styles */
+    #intro {
+      max-width: 600px;
+      background: #f9faff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(74, 144, 226, 0.2);
+      padding: 40px 30px;
+      text-align: center;
+      margin-bottom: 60px;
+      user-select: none;
+    }
+    #intro h1 {
+      color: #4a90e2;
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      text-shadow: 0 1px 4px rgba(74,144,226,0.5);
+    }
+    #intro p {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 40px;
+    }
+    #btnExplore {
+      background: #e75480;
+      color: white;
+      border: none;
+      padding: 15px 50px;
+      font-size: 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(231, 84, 128, 0.5);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    #btnExplore:hover {
+      background: #d0416e;
+      box-shadow: 0 10px 30px rgba(208, 65, 110, 0.7);
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 15px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      .countdown {
+        font-size: 2rem;
+      }
+      .container, .quiz-container, #intro {
+        padding: 25px 20px;
+      }
+      ul li {
+        font-size: 1rem;
+      }
+      .gallery {
+        grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+        gap: 15px;
+      }
+      .gallery img {
+        height: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro page -->
+  <section id="intro" role="main" aria-label="Introductory greeting">
+    <h1>Hai RENE!!</h1>
+    <p>
+      Keren kan aku bisa bikin ginian. Aku dari kemarin nyari cara gimana bikin website dan akhirnya berhasil.  
+      I made this special for you. Penasaran ga?
+    </p>
+    <button id="btnExplore" aria-controls="mainContent" aria-expanded="false">Explore Me</button>
+  </section>
+
+  <!-- Main content hidden initially -->
+  <main id="mainContent" style="display:none;" tabindex="-1">
+    <section class="container" id="definition">
+      <h2>Definition of Love</h2>
+      <p>
+        Love is a beautiful blend of laughter, patience, and unwavering support.  
+        It’s about cherishing each other’s presence, understanding even in silence,  
+        and growing stronger together every day.
+      </p>
+    </section>
+
+    <section class="container" id="reasons">
+      <h2>10 Reasons Why I Love Rene Conrad Julienne</h2>
+      <ul>
+        <li>He is funny and always knows how to make me laugh.</li>
+        <li>He is patient and cherishes me even when I’m mad without reason.</li>
+        <li>He admits when he’s wrong, even if I’m the one who’s wrong.</li>
+        <li>He always wants to make me happy.</li>
+        <li>He is hardworking and dedicated.</li>
+        <li>He is lovely and kind-hearted.</li>
+        <li>He supports me unconditionally.</li>
+        <li>He makes every day special just by being himself.</li>
+        <li>He listens and understands me deeply.</li>
+        <li>I love him so much and feel lucky to have him.</li>
+      </ul>
+    </section>
+
+    <section class="container" id="thankyou">
+      <h2>Thank You Message</h2>
+      <p>
+        Thank you, Rene, for being my rock, my laughter, and my greatest blessing.  
+        I cherish every moment with you and look forward to many more memories together.  
+        I love you endlessly.
+      </p>
+    </section>
+
+    <section class="container" id="gallery">
+      <h2>Our Cherished Lovely Moments Together</h2>
+      <div class="gallery" aria-label="Gallery of cherished moments">
+        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80" alt="Moment 1" data-full="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1200&q=80" />
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Moment 2" data-full="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80" />
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Moment 3" data-full="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80" />
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Moment 4" data-full="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" />
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Moment 5" data-full="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" />
+      </div>
+    </section>
+
+    <section class="container" id="anniversary">
+      <h2>Our Anniversary</h2>
+      <p>We celebrate our love every <strong>26 March</strong>.</p>
+      <div class="countdown" id="countdown" aria-live="polite">Loading countdown...</div>
+    </section>
+
+    <section class="quiz-container" id="quiz">
+      <h2>Mini Quiz: How Well Do You Know Cheri?</h2>
+      <form id="quizForm" aria-label="Quiz about Cheri's favorites">
+        <div class="question">
+          1. What is Cheri's favorite food?
+        </div>
+        <ul class="answers">
+          <li>
+            <input type="radio" id="food1" name="food" value="sushi" />
+            <label for="food1">Sushi</label>
+          </li>
+          <li>
+            <input type="radio" id="food2" name="food" value="gyoza" />
+            <label for="food2">Gyoza</label>
+          </li>
+          <li>
+            <input type="radio" id="food3" name="food" value="ramen" />
+            <label for="food3">Ramen</label>
+          </li>
+        </ul>
+
+        <div class="question">
+          2. Who are Cheri's top 3 favorite boys? (Select all that apply)
+        </div>
+        <ul class="answers">
+          <li>
+            <input type="checkbox" id="boy1" name="boys" value="rene" />
+            <label for="boy1">Rene</label>
+          </li>
+          <li>
+            <input type="checkbox" id="boy2" name="boys" value="taco" />
+            <label for="boy2">Taco</label>
+          </li>
+          <li>
+            <input type="checkbox" id="boy3" name="boys" value="bobby" />
+            <label for="boy3">Bobby</label>
+          </li>
+          <li>
+            <input type="checkbox" id="boy4" name="boys" value="alex" />
+            <label for="boy4">Alex</label>
+          </li>
+          <li>
+            <input type="checkbox" id="boy5" name="boys" value="john" />
+            <label for="boy5">John</label>
+          </li>
+        </ul>
+
+        <button type="submit" class="btn-submit" aria-label="Submit quiz answers">Submit Answers</button>
+        <div class="result" id="quizResult" role="alert" aria-live="assertive"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer style="margin-top:auto; padding:15px 0; text-align:center; font-size:0.9rem; color:#666;">
+    &copy; 2025 Made with ❤️ for Rene Conrad Julienne
+  </footer>
+
+  <!-- Modal for image preview -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <button class="modal-close" id="modalClose" aria-label="Close image preview">&times;</button>
+    <div class="modal-content" id="modalContent">
+      <img src="" alt="" />
+    </div>
+  </div>
+
+  <!-- Audio player fixed bottom -->
+  <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8e5f4d7e5b.mp3?filename=can-t-smile-without-you-barry-manilow-6154.mp3" loop></audio>
+  <div style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); background: #f9faff; border-radius: 30px; box-shadow: 0 6px 20px rgba(74,144,226,0.3); padding: 8px 20px; display: flex; align-items: center; gap: 15px; user-select: none; z-index: 1001;">
+    <button id="btnPlayPause" aria-label="Play or pause music" style="background:#e75480; border:none; border-radius: 50%; width: 40px; height: 40px; color:#fff; font-size: 1.5rem; cursor:pointer; box-shadow: 0 4px 12px rgba(231,84,128,0.6);">▶</button>
+    <span style="font-weight:600; color:#4a90e2; font-size: 1rem;">Can't Smile Without You - Barry Manilow</span>
+  </div>
+
+  <script>
+    // Intro explore button
+    const btnExplore = document.getElementById('btnExplore');
+    const mainContent = document.getElementById('mainContent');
+    const introSection = document.getElementById('intro');
+
+    btnExplore.addEventListener('click', () => {
+      introSection.style.display = 'none';
+      mainContent.style.display = 'block';
+      mainContent.focus();
+    });
+
+    // Countdown timer to 26 March 2025
+    function countdown() {
+      const countdownEl = document.getElementById('countdown');
+      const anniversaryDate = new Date('2025-03-26T00:00:00');
+      const now = new Date();
+      const diff = anniversaryDate - now;
+
+      if(diff <= 0) {
+        countdownEl.textContent = "26 March is our special day ❤️";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    setInterval(countdown, 1000);
+    countdown();
+
+    // Modal image preview
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const modal = document.getElementById('modal');
+    const modalImg = modal.querySelector('img');
+    const modalClose = document.getElementById('modalClose');
+
+    galleryImages.forEach(img => {
+      img.addEventListener('click', () => {
+        modal.classList.add('active');
+        modalImg.src = img.dataset.full || img.src;
+        modalImg.alt = img.alt;
+      });
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modalImg.src = '';
+      modalImg.alt = '';
+    });
+
+    modal.addEventListener('click', e => {
+      if(e.target === modal) {
+        modal.classList.remove('active');
+        modalImg.src = '';
+        modalImg.alt = '';
+      }
+    });
+
+    // Quiz logic
+    const quizForm = document.getElementById('quizForm');
+    const quizResult = document.getElementById('quizResult');
+
+    quizForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Question 1 correct answer: gyoza
+      const foodAnswer = quizForm.elements['food'].value.toLowerCase();
+
+      // Question 2 correct answers: rene, taco, bobby
+      const boysSelected = Array.from(quizForm.elements['boys'])
+        .filter(chk => chk.checked)
+        .map(chk => chk.value.toLowerCase());
+
+      const q1Correct = (foodAnswer === 'gyoza');
+
+      const correctBoys = ['rene', 'taco', 'bobby'];
+      const q2Correct = boysSelected.length === 3 && correctBoys.every(boy => boysSelected.includes(boy));
+
+      if(q1Correct && q2Correct) {
+        quizResult.textContent = "🎉 Perfect! You know Cheri very well!";
+        quizResult.style.color = '#4a90e2';
+      } else if(q1Correct || q2Correct) {
+        quizResult.textContent = "👍 Almost there! Keep trying!";
+        quizResult.style.color = '#e75480';
+      } else {
+        quizResult.textContent = "❌ Hmm, try again!";
+        quizResult.style.color = '#cc3333';
+      }
+    });
+
+    // Audio play/pause button
+    const bgm = document.getElementById('bgm');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+
+    btnPlayPause.addEventListener('click', () => {
+      if(bgm.paused) {
+        bgm.play();
+        btnPlayPause.textContent = '⏸';
+      } else {
+        bgm.pause();
+        btnPlayPause.textContent = '▶';
+      }
+    });
+
+    // Auto pause music when modal open (optional)
+    modal.addEventListener('transitionstart', () => {
+      if(modal.classList.contains('active')) {
+        bgm.pause();
+        btnPlayPause.textContent = '▶';
+      }
+    });
+  </script>
+</body>
+</html>
